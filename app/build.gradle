@@ -2,6 +2,16 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
+def getSecretProperty(name) {
+    Properties properties = new Properties()
+    properties.load(project.rootProject.file('secret.properties').newDataInputStream())
+
+    return properties.getProperty(name.toString())
+}
+
+def DEVELOPER_ID = getSecretProperty('DEVELOPER_ID')
+def REDIRECT_URI = getSecretProperty('REDIRECT_URI')
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -15,6 +25,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        buildConfigField 'String', 'DEVELOPER_ID', DEVELOPER_ID
+        buildConfigField 'String', 'REDIRECT_URI', REDIRECT_URI
     }
     buildTypes {
         release {
