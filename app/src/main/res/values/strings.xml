@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">bergamio</string>
+    <string name="auth">認証</string>
+    <string name="auth_miss">認証失敗</string>
 </resources>
