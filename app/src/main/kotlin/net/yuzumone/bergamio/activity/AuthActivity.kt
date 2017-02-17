@@ -19,7 +19,7 @@ class AuthActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_auth)
-
+        setSupportActionBar(binding.toolbar)
         val clientId = BuildConfig.DEVELOPER_ID
         val redirect = BuildConfig.REDIRECT_URI
         val uri = "https://api.iijmio.jp/mobile/d/v1/authorization/" +
