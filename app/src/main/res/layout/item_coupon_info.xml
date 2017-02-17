@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+        <variable
+            name="info"
+            type="net.yuzumone.bergamio.model.CouponInfo"/>
+    </data>
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        card_view:cardElevation="@dimen/cardview_default_elevation"
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            >
+
+            <TextView
+                android:id="@+id/text_hdd"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{info.hddServiceCode}"
+                style="@style/Base.TextAppearance.AppCompat.Headline"
+                />
+
+            <TextView
+                android:id="@+id/text_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:layout_below="@+id/text_hdd"
+                />
+
+            <TextView
+                android:id="@+id/text_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</layout>
