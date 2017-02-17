@@ -43,6 +43,7 @@ class AuthActivity : AppCompatActivity() {
             PreferenceUtil.storeExpire(this, expire)
             val mainActivityIntent = Intent(this, MainActivity::class.java)
             startActivity(mainActivityIntent)
+            finish()
         } else {
             Toast.makeText(this, getString(R.string.auth_miss), Toast.LENGTH_LONG).show()
         }
