@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         } else {
             val intent = Intent(this, AuthActivity::class.java)
             startActivity(intent)
+            finish()
         }
     }
 
