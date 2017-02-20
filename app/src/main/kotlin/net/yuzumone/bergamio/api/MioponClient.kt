@@ -1,6 +1,6 @@
 package net.yuzumone.bergamio.api
 
-import net.yuzumone.bergamio.model.Result
+import net.yuzumone.bergamio.model.CouponResult
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
@@ -24,7 +24,7 @@ class MioponClient @Inject constructor(client: OkHttpClient) {
         service = retrofit.create(MioponService::class.java)
     }
 
-    fun getCoupon(developer: String, token: String): Observable<Result> {
+    fun getCoupon(developer: String, token: String): Observable<CouponResult> {
         return service.getCoupon("application/json", developer, token)
     }
 }
