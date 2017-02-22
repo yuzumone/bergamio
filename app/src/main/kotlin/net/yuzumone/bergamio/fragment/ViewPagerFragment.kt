@@ -13,6 +13,7 @@ import net.yuzumone.bergamio.model.Coupon
 import net.yuzumone.bergamio.model.CouponInfo
 import net.yuzumone.bergamio.model.PacketLog
 import net.yuzumone.bergamio.model.PacketLogInfo
+import net.yuzumone.bergamio.view.OnToggleElevationListener
 import java.util.*
 
 class ViewPagerFragment : Fragment() {
@@ -21,6 +22,7 @@ class ViewPagerFragment : Fragment() {
     private lateinit var couponInfo: CouponInfo
     private lateinit var packetLogInfo: PacketLogInfo
     private lateinit var adapter: ViewPagerAdapter
+    private lateinit var listener: OnToggleElevationListener
 
     companion object {
         val ARG_COUPON_INFO = "coupon_info"
@@ -32,6 +34,13 @@ class ViewPagerFragment : Fragment() {
                     putParcelable(ARG_PACKET_LOG, packetLog)
                 }
             }
+        }
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is OnToggleElevationListener) {
+            listener = context
         }
     }
 
@@ -51,6 +60,7 @@ class ViewPagerFragment : Fragment() {
 
     private fun initView() {
         activity.title = couponInfo.hddServiceCode
+        listener.onToggleElevation(false)
         adapter = ViewPagerAdapter(childFragmentManager)
         binding.pager.adapter = adapter
         binding.tab.setupWithViewPager(binding.pager)

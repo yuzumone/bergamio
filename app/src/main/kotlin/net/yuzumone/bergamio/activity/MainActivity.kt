@@ -11,8 +11,9 @@ import net.yuzumone.bergamio.di.ActivityComponent
 import net.yuzumone.bergamio.di.ActivityModule
 import net.yuzumone.bergamio.fragment.CouponInfoListFragment
 import net.yuzumone.bergamio.util.PreferenceUtil
+import net.yuzumone.bergamio.view.OnToggleElevationListener
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnToggleElevationListener {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -32,6 +33,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }
+    }
+
+    override fun onToggleElevation(bool: Boolean) {
+        val elevation = if (bool) resources.getDimension(R.dimen.elevation) else 0F
+        binding.toolbar.elevation = elevation
     }
 
     fun getComponent(): ActivityComponent {

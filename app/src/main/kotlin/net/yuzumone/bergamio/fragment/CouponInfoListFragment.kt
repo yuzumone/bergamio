@@ -18,6 +18,7 @@ import net.yuzumone.bergamio.model.PacketLogInfo
 import net.yuzumone.bergamio.util.PreferenceUtil
 import net.yuzumone.bergamio.view.ArrayRecyclerAdapter
 import net.yuzumone.bergamio.view.BindingHolder
+import net.yuzumone.bergamio.view.OnToggleElevationListener
 import net.yuzumone.bergamio.view.RecyclerItemClickListener
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
@@ -32,8 +33,16 @@ class CouponInfoListFragment : BaseFragment() {
     private lateinit var couponInfo: ArrayList<CouponInfo>
     private lateinit var packetLogs: ArrayList<PacketLogInfo>
     private lateinit var adapter: CouponInfoAdapter
+    private lateinit var listener: OnToggleElevationListener
     @Inject lateinit var client: MioponClient
     @Inject lateinit var compositeSubscription: CompositeSubscription
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is OnToggleElevationListener) {
+            listener = context
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +59,7 @@ class CouponInfoListFragment : BaseFragment() {
 
     private fun initView() {
         activity.title = activity.getString(R.string.app_name)
+        listener.onToggleElevation(true)
         binding.swipeRefresh.isEnabled = false
         binding.swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
         adapter = CouponInfoAdapter(activity)
