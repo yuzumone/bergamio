@@ -1,5 +1,6 @@
 package net.yuzumone.bergamio.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -8,20 +9,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import net.yuzumone.bergamio.databinding.FragmentViewpagerBinding
+import net.yuzumone.bergamio.model.Coupon
 import net.yuzumone.bergamio.model.CouponInfo
+import net.yuzumone.bergamio.model.PacketLog
+import net.yuzumone.bergamio.model.PacketLogInfo
 import java.util.*
 
 class ViewPagerFragment : Fragment() {
 
     private lateinit var binding: FragmentViewpagerBinding
     private lateinit var couponInfo: CouponInfo
+    private lateinit var packetLogInfo: PacketLogInfo
+    private lateinit var adapter: ViewPagerAdapter
 
     companion object {
         val ARG_COUPON_INFO = "coupon_info"
-        fun newInstance(couponInfo: CouponInfo): ViewPagerFragment {
+        val ARG_PACKET_LOG = "packet_log"
+        fun newInstance(couponInfo: CouponInfo, packetLog: PacketLogInfo): ViewPagerFragment {
             return ViewPagerFragment().apply {
                 arguments = Bundle().apply {
                     putParcelable(ARG_COUPON_INFO, couponInfo)
+                    putParcelable(ARG_PACKET_LOG, packetLog)
                 }
             }
         }
@@ -31,6 +39,7 @@ class ViewPagerFragment : Fragment() {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             couponInfo = arguments.getParcelable(ARG_COUPON_INFO)
+            packetLogInfo = arguments.getParcelable(ARG_PACKET_LOG)
         }
     }
 
@@ -42,12 +51,15 @@ class ViewPagerFragment : Fragment() {
 
     private fun initView() {
         activity.title = couponInfo.hddServiceCode
-        val adapter = ViewPagerAdapter(fragmentManager)
+        adapter = ViewPagerAdapter(childFragmentManager)
         binding.pager.adapter = adapter
         binding.tab.setupWithViewPager(binding.pager)
-        couponInfo.hdoInfo.forEach { hdoInfo ->
-            val fragment = HdoInfoFragment.newInstance(hdoInfo)
-            adapter.add(hdoInfo.number, fragment)
+        val couponFragment = CouponFragment.newInstance(ArrayList<Coupon>(couponInfo.coupon))
+        adapter.add("Coupon", couponFragment)
+        couponInfo.hdoInfo.forEachIndexed { i, hdoInfo ->
+            val packetLogs = packetLogInfo.hdoInfo[i].packetLog
+            val hdoFragment = HdoInfoFragment.newInstance(hdoInfo, ArrayList<PacketLog>(packetLogs))
+            adapter.add(hdoInfo.number, hdoFragment)
         }
     }
 
