@@ -2,8 +2,12 @@ package net.yuzumone.bergamio.api
 
 import net.yuzumone.bergamio.model.CouponResult
 import net.yuzumone.bergamio.model.LogResult
+import net.yuzumone.bergamio.model.ToggleCouponInfo
+import net.yuzumone.bergamio.model.ToggleResult
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.PUT
 import rx.Observable
 
 interface MioponService {
@@ -15,4 +19,10 @@ interface MioponService {
     @GET("log/packet/")
     fun getLog(@Header("X-IIJmio-Developer") developer: String,
                @Header("X-IIJmio-Authorization") token: String): Observable<LogResult>
+
+    @PUT("coupon/")
+    fun putToggleCoupon(@Header("Context-type") type: String,
+                  @Header("X-IIJmio-Developer") developer: String,
+                  @Header("X-IIJmio-Authorization") token: String,
+                  @Body body: ToggleCouponInfo): Observable<ToggleResult>
 }

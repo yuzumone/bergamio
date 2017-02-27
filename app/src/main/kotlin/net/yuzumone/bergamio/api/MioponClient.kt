@@ -2,6 +2,8 @@ package net.yuzumone.bergamio.api
 
 import net.yuzumone.bergamio.model.CouponResult
 import net.yuzumone.bergamio.model.LogResult
+import net.yuzumone.bergamio.model.ToggleCouponInfo
+import net.yuzumone.bergamio.model.ToggleResult
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
@@ -31,5 +33,9 @@ class MioponClient @Inject constructor(client: OkHttpClient) {
 
     fun getLog(developer: String, token: String): Observable<LogResult> {
         return service.getLog(developer, token)
+    }
+
+    fun putToggleCoupon(developer: String, token: String, body: ToggleCouponInfo): Observable<ToggleResult> {
+        return service.putToggleCoupon("application/json", developer, token, body)
     }
 }
