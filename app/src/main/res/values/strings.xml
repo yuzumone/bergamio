@@ -3,4 +3,6 @@
     <string name="auth">認証</string>
     <string name="auth_miss">認証失敗</string>
     <string name="mb">%1$dMB</string>
+    <string name="confirm_on">クーポンをONにしますか？</string>
+    <string name="confirm_off">クーポンをOFFにしますか？</string>
 </resources>
