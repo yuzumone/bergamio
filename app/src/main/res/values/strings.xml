@@ -5,4 +5,5 @@
     <string name="mb">%1$dMB</string>
     <string name="confirm_on">クーポンをONにしますか？</string>
     <string name="confirm_off">クーポンをOFFにしますか？</string>
+    <string name="type_expire">%1$s(%2$s)</string>
 </resources>

@@ -57,12 +57,9 @@ class CouponFragment : BaseFragment() {
             return BindingHolder(context, parent!!, R.layout.item_coupon)
         }
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemCouponBinding>?, position: Int) {
+        override fun onBindViewHolder(holder: BindingHolder<ItemCouponBinding>, position: Int) {
             val item = getItem(position)
-            holder?.binding?.apply {
-                textType.text = item.type + item.expire
-                textVolume.text = item.volume.toString() + "MB"
-            }
+            holder.binding.coupon = item
         }
     }
 

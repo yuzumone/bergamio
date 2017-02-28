@@ -62,14 +62,9 @@ class HdoInfoFragment : BaseFragment() {
             return BindingHolder(context, parent!!, R.layout.item_packet_log)
         }
 
-
-        override fun onBindViewHolder(holder: BindingHolder<ItemPacketLogBinding>?, position: Int) {
+        override fun onBindViewHolder(holder: BindingHolder<ItemPacketLogBinding>, position: Int) {
             val item = getItem(position)
-            holder?.binding?.apply {
-                log = item
-                textWithCoupon.text = item.withCoupon.toString() + "MB"
-                textWithoutCoupon.text = item.withoutCoupon.toString() + "MB"
-            }
+            holder.binding.log = item
         }
     }
 
