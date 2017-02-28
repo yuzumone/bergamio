@@ -8,10 +8,37 @@
         android:layout_height="match_parent"
         >
 
+        <RelativeLayout
+            android:id="@+id/switch_content"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@color/blue_300"
+            >
+
+            <TextView
+                android:id="@+id/text_coupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="72dp"
+                style="@style/Base.TextAppearance.AppCompat.Subhead.Inverse"
+                />
+
+            <Switch
+                android:id="@+id/switch_coupon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="16dp"
+                />
+        </RelativeLayout>
+
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@+id/switch_content"
             />
     </RelativeLayout>
 </layout>

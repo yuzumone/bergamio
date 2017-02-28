@@ -6,4 +6,7 @@
     <string name="confirm_on">クーポンをONにしますか？</string>
     <string name="confirm_off">クーポンをOFFにしますか？</string>
     <string name="type_expire">%1$s(%2$s)</string>
+    <string name="coupon_on">Coupon: ON</string>
+    <string name="coupon_off">Coupon: OFF</string>
+    <string name="success">成功</string>
 </resources>
