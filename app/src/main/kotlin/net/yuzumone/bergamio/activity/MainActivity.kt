@@ -4,6 +4,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.MenuItem
 import net.yuzumone.bergamio.MainApp
 import net.yuzumone.bergamio.R
 import net.yuzumone.bergamio.databinding.ActivityMainBinding
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity(), OnToggleElevationListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        setSupportActionBar(binding.toolbar)
+        initView()
         getComponent().inject(this)
 
         if (PreferenceUtil.hasAvailableToken(this)) {
@@ -33,6 +34,27 @@ class MainActivity : AppCompatActivity(), OnToggleElevationListener {
             startActivity(intent)
             finish()
         }
+    }
+
+    private fun initView() {
+        setSupportActionBar(binding.toolbar)
+        supportFragmentManager.addOnBackStackChangedListener {
+            if (supportFragmentManager.backStackEntryCount > 0) {
+                supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            } else {
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            }
+        }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onToggleElevation(bool: Boolean) {
