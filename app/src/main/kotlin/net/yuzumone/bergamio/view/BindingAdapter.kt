@@ -4,6 +4,8 @@ import android.databinding.BindingAdapter
 import android.widget.TextView
 import net.yuzumone.bergamio.R
 import net.yuzumone.bergamio.model.Coupon
+import net.yuzumone.bergamio.model.CouponInfo
+import net.yuzumone.bergamio.model.HdoInfo
 
 object BindingAdapter {
 
@@ -17,5 +19,17 @@ object BindingAdapter {
     @JvmStatic
     fun setTypeExpire(view: TextView, coupon: Coupon) {
         view.text = view.context.getString(R.string.type_expire, coupon.type, coupon.expire)
+    }
+
+    @BindingAdapter("app:number")
+    @JvmStatic
+    fun setNumber(view: TextView, couponInfo: CouponInfo) {
+        view.text = couponInfo.hdoInfo.joinToString(transform = HdoInfo::number, separator = "\n")
+    }
+
+    @BindingAdapter("app:total")
+    @JvmStatic
+    fun setTotal(view: TextView, couponInfo: CouponInfo) {
+        view.text = view.context.getString(R.string.mb, couponInfo.coupon.sumBy { it.volume })
     }
 }

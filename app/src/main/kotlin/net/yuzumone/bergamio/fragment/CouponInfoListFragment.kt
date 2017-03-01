@@ -13,7 +13,6 @@ import net.yuzumone.bergamio.api.MioponClient
 import net.yuzumone.bergamio.databinding.FragmentCouponInfoListBinding
 import net.yuzumone.bergamio.databinding.ItemCouponInfoBinding
 import net.yuzumone.bergamio.model.CouponInfo
-import net.yuzumone.bergamio.model.HdoInfo
 import net.yuzumone.bergamio.model.PacketLogInfo
 import net.yuzumone.bergamio.util.PreferenceUtil
 import net.yuzumone.bergamio.view.ArrayRecyclerAdapter
@@ -133,15 +132,9 @@ class CouponInfoListFragment : BaseFragment() {
             return BindingHolder(context, parent!!, R.layout.item_coupon_info)
         }
 
-        override fun onBindViewHolder(holder: BindingHolder<ItemCouponInfoBinding>?, position: Int) {
+        override fun onBindViewHolder(holder: BindingHolder<ItemCouponInfoBinding>, position: Int) {
             val item = getItem(position)
-            holder?.binding?.let { binding ->
-                binding.info = item
-                val number = item.hdoInfo.joinToString(transform = HdoInfo::number, separator = "\n")
-                binding.textNumber.text = number
-                val total = item.coupon.sumBy { it.volume }
-                binding.textTotal.text = context.getString(R.string.mb, total)
-            }
+            holder.binding.info = item
         }
     }
 }
