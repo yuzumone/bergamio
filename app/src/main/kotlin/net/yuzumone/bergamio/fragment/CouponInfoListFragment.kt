@@ -33,8 +33,13 @@ class CouponInfoListFragment : BaseFragment() {
     private lateinit var packetLogs: ArrayList<PacketLogInfo>
     private lateinit var adapter: CouponInfoAdapter
     private lateinit var listener: OnToggleElevationListener
+    private var shouldRefresh = false
     @Inject lateinit var client: MioponClient
     @Inject lateinit var compositeSubscription: CompositeSubscription
+
+    companion object {
+        val TAG = "coupon_info_list"
+    }
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -87,6 +92,7 @@ class CouponInfoListFragment : BaseFragment() {
                         { response ->
                             couponInfo = ArrayList<CouponInfo>(response.couponInfo)
                             adapter.addAllWithNotify(couponInfo)
+                            shouldRefresh = false
                         },
                         { error ->
                             Toast.makeText(activity, error.message, Toast.LENGTH_SHORT).show()
@@ -110,7 +116,7 @@ class CouponInfoListFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if (couponInfo.size == 0 && packetLogs.size == 0) {
+        if ((couponInfo.size == 0 && packetLogs.size == 0) || shouldRefresh) {
             val dev = BuildConfig.DEVELOPER_ID
             val token = PreferenceUtil.loadToken(activity)
             compositeSubscription.add(fetchCoupon(dev, token))
@@ -123,6 +129,10 @@ class CouponInfoListFragment : BaseFragment() {
     override fun onDestroyView() {
         compositeSubscription.unsubscribe()
         super.onDestroyView()
+    }
+
+    fun notifyShouldRefresh() {
+        shouldRefresh = true
     }
 
     class CouponInfoAdapter(context: Context) : ArrayRecyclerAdapter<CouponInfo,

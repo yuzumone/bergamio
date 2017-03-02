@@ -29,6 +29,7 @@ class HdoInfoFragment : BaseFragment(), ConfirmDialogFragment.OnConfirmListener 
     private lateinit var binding: FragmentHdoInfoBinding
     private lateinit var hdoInfo: HdoInfo
     private lateinit var packetLogs: ArrayList<PacketLog>
+    private lateinit var listener: OnRefreshCouponInfoListener
     @Inject lateinit var client: MioponClient
     @Inject lateinit var compositeSubscription: CompositeSubscription
 
@@ -42,6 +43,13 @@ class HdoInfoFragment : BaseFragment(), ConfirmDialogFragment.OnConfirmListener 
                     putParcelableArrayList(ARG_PACKET_LOG, packetLogs)
                 }
             }
+        }
+    }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+        if (context is OnRefreshCouponInfoListener) {
+            listener = context
         }
     }
 
@@ -94,6 +102,7 @@ class HdoInfoFragment : BaseFragment(), ConfirmDialogFragment.OnConfirmListener 
                             binding.switchCoupon.isChecked = !bool
                             val text = if (bool) getString(R.string.coupon_off) else getString(R.string.coupon_on)
                             binding.textCoupon.text = text
+                            listener.onRefresh()
                         },
                         { error ->
                             Toast.makeText(activity, error.message, Toast.LENGTH_SHORT).show()
@@ -111,6 +120,10 @@ class HdoInfoFragment : BaseFragment(), ConfirmDialogFragment.OnConfirmListener 
     override fun onDestroyView() {
         compositeSubscription.unsubscribe()
         super.onDestroyView()
+    }
+
+    interface OnRefreshCouponInfoListener {
+        fun onRefresh()
     }
 
     class PacketLogAdapter(context: Context) : ArrayRecyclerAdapter<PacketLog,

@@ -11,10 +11,11 @@ import net.yuzumone.bergamio.databinding.ActivityMainBinding
 import net.yuzumone.bergamio.di.ActivityComponent
 import net.yuzumone.bergamio.di.ActivityModule
 import net.yuzumone.bergamio.fragment.CouponInfoListFragment
+import net.yuzumone.bergamio.fragment.HdoInfoFragment
 import net.yuzumone.bergamio.util.PreferenceUtil
 import net.yuzumone.bergamio.view.OnToggleElevationListener
 
-class MainActivity : AppCompatActivity(), OnToggleElevationListener {
+class MainActivity : AppCompatActivity(), OnToggleElevationListener, HdoInfoFragment.OnRefreshCouponInfoListener {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -27,7 +28,8 @@ class MainActivity : AppCompatActivity(), OnToggleElevationListener {
         if (PreferenceUtil.hasAvailableToken(this)) {
             if (savedInstanceState == null) {
                 val fragment = CouponInfoListFragment()
-                supportFragmentManager.beginTransaction().add(R.id.content, fragment).commit()
+                supportFragmentManager.beginTransaction()
+                        .add(R.id.content, fragment, CouponInfoListFragment.TAG).commit()
             }
         } else {
             val intent = Intent(this, AuthActivity::class.java)
@@ -44,6 +46,13 @@ class MainActivity : AppCompatActivity(), OnToggleElevationListener {
             } else {
                 supportActionBar?.setDisplayHomeAsUpEnabled(false)
             }
+        }
+    }
+
+    override fun onRefresh() {
+        val f = supportFragmentManager.findFragmentByTag(CouponInfoListFragment.TAG)
+        if (f != null && f is CouponInfoListFragment) {
+            f.notifyShouldRefresh()
         }
     }
 
