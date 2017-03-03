@@ -23,7 +23,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         buildConfigField 'String', 'DEVELOPER_ID', DEVELOPER_ID
         buildConfigField 'String', 'REDIRECT_URI', REDIRECT_URI
