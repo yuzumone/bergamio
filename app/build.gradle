@@ -9,8 +9,10 @@ def getSecretProperty(name) {
     return properties.getProperty(name.toString())
 }
 
-def DEVELOPER_ID = getSecretProperty('DEVELOPER_ID')
-def REDIRECT_URI = getSecretProperty('REDIRECT_URI')
+def SCHEME = getSecretProperty('SCHEME')
+def HOST = getSecretProperty('HOST')
+def DEVELOPER_ID = "\"${getSecretProperty('DEVELOPER_ID')}\""
+def REDIRECT_URI = "\"${getSecretProperty('REDIRECT_URI')}\""
 
 android {
     compileSdkVersion 25
@@ -25,6 +27,7 @@ android {
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        manifestPlaceholders = [scheme: SCHEME, host: HOST]
         buildConfigField 'String', 'DEVELOPER_ID', DEVELOPER_ID
         buildConfigField 'String', 'REDIRECT_URI', REDIRECT_URI
     }
