@@ -15,15 +15,15 @@ def DEVELOPER_ID = "\"${getSecretProperty('DEVELOPER_ID')}\""
 def REDIRECT_URI = "\"${getSecretProperty('REDIRECT_URI')}\""
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion "25.0.2"
+    compileSdkVersion 26
+    buildToolsVersion "26.0.1"
     dataBinding {
         enabled = true
     }
     defaultConfig {
         applicationId "net.yuzumone.bergamio"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 26
         versionCode 1
         versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -51,7 +51,7 @@ kapt {
     generateStubs = true
 }
 
-ext.support_lib_version = '25.3.0'
+ext.support_lib_version = '26.0.0'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
