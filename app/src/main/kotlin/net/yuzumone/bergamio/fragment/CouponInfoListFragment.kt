@@ -13,12 +13,15 @@ import net.yuzumone.bergamio.api.MioponClient
 import net.yuzumone.bergamio.databinding.FragmentCouponInfoListBinding
 import net.yuzumone.bergamio.databinding.ItemCouponInfoBinding
 import net.yuzumone.bergamio.model.CouponInfo
+import net.yuzumone.bergamio.model.CouponResult
+import net.yuzumone.bergamio.model.LogResult
 import net.yuzumone.bergamio.model.PacketLogInfo
 import net.yuzumone.bergamio.util.PreferenceUtil
 import net.yuzumone.bergamio.view.ArrayRecyclerAdapter
 import net.yuzumone.bergamio.view.BindingHolder
 import net.yuzumone.bergamio.view.OnToggleElevationListener
 import net.yuzumone.bergamio.view.RecyclerItemClickListener
+import rx.Observable
 import rx.Subscription
 import rx.android.schedulers.AndroidSchedulers
 import rx.schedulers.Schedulers
@@ -82,17 +85,21 @@ class CouponInfoListFragment : BaseFragment() {
         )
     }
 
-    private fun fetchCoupon(developer: String, token: String): Subscription {
-        return client.getCoupon(developer, token)
+    private fun fetch(developer: String, token: String): Subscription {
+        return Observable.zip(
+                client.getCoupon(developer, token),
+                client.getLog(developer, token),
+                {coupon, log -> createResponseData(coupon, log)})
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { binding.swipeRefresh.isRefreshing = true }
                 .doOnCompleted { binding.swipeRefresh.isRefreshing = false }
                 .subscribe (
-                        { response ->
-                            couponInfo = ArrayList<CouponInfo>(response.couponInfo)
+                        { (coupon, log) ->
+                            couponInfo = ArrayList<CouponInfo>(coupon.couponInfo)
                             adapter.addAllWithNotify(couponInfo)
                             shouldRefresh = false
+                            packetLogs = ArrayList<PacketLogInfo>(log.packetLogInfo)
                         },
                         { error ->
                             Toast.makeText(activity, error.message, Toast.LENGTH_SHORT).show()
@@ -100,18 +107,8 @@ class CouponInfoListFragment : BaseFragment() {
                 )
     }
 
-    private fun fetchLog(developer: String, token: String): Subscription {
-        return client.getLog(developer, token)
-                .subscribeOn(Schedulers.newThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe (
-                        { response ->
-                            packetLogs = ArrayList<PacketLogInfo>(response.packetLogInfo)
-                        },
-                        { error ->
-                            Toast.makeText(activity, error.message, Toast.LENGTH_SHORT).show()
-                        }
-                )
+    private fun createResponseData(coupon: CouponResult, log: LogResult): ResponseData {
+        return ResponseData(coupon, log)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -119,8 +116,7 @@ class CouponInfoListFragment : BaseFragment() {
         if ((couponInfo.size == 0 && packetLogs.size == 0) || shouldRefresh) {
             val dev = BuildConfig.DEVELOPER_ID
             val token = PreferenceUtil.loadToken(activity)
-            compositeSubscription.add(fetchCoupon(dev, token))
-            compositeSubscription.add(fetchLog(dev, token))
+            compositeSubscription.add(fetch(dev, token))
         } else {
             adapter.addAllWithNotify(couponInfo)
         }
@@ -134,6 +130,8 @@ class CouponInfoListFragment : BaseFragment() {
     fun notifyShouldRefresh() {
         shouldRefresh = true
     }
+
+    data class ResponseData(val coupon: CouponResult, val log: LogResult)
 
     class CouponInfoAdapter(context: Context) : ArrayRecyclerAdapter<CouponInfo,
             BindingHolder<ItemCouponInfoBinding>>(context) {
