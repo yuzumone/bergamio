@@ -2,8 +2,8 @@
 [![platform android](https://img.shields.io/badge/platform-android-green.svg)](#)
 [![language kotlin](https://img.shields.io/badge/language-kotlin-green.svg)](#)
 [![minSdkVersion 21](https://img.shields.io/badge/minSdkVersion-21-red.svg)](#)
-[![compileSdkVersion 25](https://img.shields.io/badge/compileSdkVersion-25-yellow.svg)](#)
-[![version v1.0.0](https://img.shields.io/badge/version-v1.0.0-blue.svg)](#)
+[![compileSdkVersion 26](https://img.shields.io/badge/compileSdkVersion-26-yellow.svg)](#)
+[![version v1.0.1](https://img.shields.io/badge/version-v1.0.1-blue.svg)](#)
 
 ## Overview
 bergamio is IIJmio Mobile Service client application.  
@@ -19,7 +19,7 @@ Features include:
 | ![](./screenshot/contract.png) | ![](./screenshot/coupon.png) | ![](./screenshot/usage.png) |
 
 ## Download
-[APK](https://github.com/yuzumone/bergamio/releases/download/v1.0.0/app-release.apk)
+[APK](https://github.com/yuzumone/bergamio/releases/download/v1.0.1/app-release.apk)
 
 ## Libraries
 This project uses some libraries.
