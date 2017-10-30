@@ -1,6 +1,7 @@
 package net.yuzumone.bergamio.fragment
 
 import android.content.Context
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -58,7 +59,7 @@ class CouponInfoListFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentCouponInfoListBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_coupon_info_list, container, false)
         getComponent().inject(this)
         initView()
         return binding.root
