@@ -1,6 +1,7 @@
 package net.yuzumone.bergamio.fragment
 
 import android.content.Context
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -62,7 +63,7 @@ class HdoInfoFragment : BaseFragment(), ConfirmDialogFragment.OnConfirmListener 
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentHdoInfoBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_hdo_info, container, false)
         getComponent().inject(this)
         initView()
         return binding.root

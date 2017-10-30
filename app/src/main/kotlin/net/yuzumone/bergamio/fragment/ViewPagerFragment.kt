@@ -1,6 +1,7 @@
 package net.yuzumone.bergamio.fragment
 
 import android.content.Context
+import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
@@ -8,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import net.yuzumone.bergamio.R
 import net.yuzumone.bergamio.databinding.FragmentViewpagerBinding
 import net.yuzumone.bergamio.model.Coupon
 import net.yuzumone.bergamio.model.CouponInfo
@@ -53,7 +55,7 @@ class ViewPagerFragment : Fragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentViewpagerBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_viewpager, container, false)
         initView()
         return binding.root
     }
