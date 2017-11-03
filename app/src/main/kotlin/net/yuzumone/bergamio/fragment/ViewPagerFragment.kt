@@ -11,9 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import net.yuzumone.bergamio.R
 import net.yuzumone.bergamio.databinding.FragmentViewpagerBinding
-import net.yuzumone.bergamio.model.Coupon
 import net.yuzumone.bergamio.model.CouponInfo
-import net.yuzumone.bergamio.model.PacketLog
 import net.yuzumone.bergamio.model.PacketLogInfo
 import net.yuzumone.bergamio.view.OnToggleElevationListener
 import java.util.*
@@ -66,11 +64,11 @@ class ViewPagerFragment : Fragment() {
         adapter = ViewPagerAdapter(childFragmentManager)
         binding.pager.adapter = adapter
         binding.tab.setupWithViewPager(binding.pager)
-        val couponFragment = CouponFragment.newInstance(ArrayList<Coupon>(couponInfo.coupon))
+        val couponFragment = CouponFragment.newInstance(ArrayList(couponInfo.coupon))
         adapter.add("Coupon", couponFragment)
         couponInfo.hdoInfo.forEachIndexed { i, hdoInfo ->
             val packetLogs = packetLogInfo.hdoInfo[i].packetLog
-            val hdoFragment = HdoInfoFragment.newInstance(hdoInfo, ArrayList<PacketLog>(packetLogs))
+            val hdoFragment = HdoInfoFragment.newInstance(hdoInfo, ArrayList(packetLogs))
             adapter.add(hdoInfo.number, hdoFragment)
         }
     }
