@@ -54,8 +54,8 @@ class CouponInfoListFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        couponInfo = ArrayList<CouponInfo>()
-        packetLogs = ArrayList<PacketLogInfo>()
+        couponInfo = ArrayList()
+        packetLogs = ArrayList()
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
