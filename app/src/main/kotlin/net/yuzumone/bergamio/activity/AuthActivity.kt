@@ -39,8 +39,9 @@ class AuthActivity : AppCompatActivity() {
         val token = getToken(fragment)
         val expire = getExpire(fragment)
         if (token != "" && expire != "") {
-            PreferenceUtil.storeToken(this, token)
-            PreferenceUtil.storeExpire(this, expire)
+            val pref = PreferenceUtil(this)
+            pref.token = token
+            pref.expire = expire.toLong()
             val mainActivityIntent = Intent(this, MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()

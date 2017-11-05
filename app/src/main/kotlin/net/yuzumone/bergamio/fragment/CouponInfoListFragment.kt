@@ -116,7 +116,7 @@ class CouponInfoListFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         if ((couponInfo.size == 0 && packetLogs.size == 0) || shouldRefresh) {
             val dev = BuildConfig.DEVELOPER_ID
-            val token = PreferenceUtil.loadToken(activity)
+            val token = PreferenceUtil(activity).token
             compositeSubscription.add(fetch(dev, token))
         } else {
             adapter.addAllWithNotify(couponInfo)

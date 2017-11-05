@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), OnToggleElevationListener, HdoInfoFrag
         initView()
         getComponent().inject(this)
 
-        if (PreferenceUtil.hasAvailableToken(this)) {
+        if (PreferenceUtil(this).hasAvailableToken) {
             if (savedInstanceState == null) {
                 val fragment = CouponInfoListFragment()
                 supportFragmentManager.beginTransaction()

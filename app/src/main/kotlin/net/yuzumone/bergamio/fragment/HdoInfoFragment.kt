@@ -113,7 +113,7 @@ class HdoInfoFragment : BaseFragment(), ConfirmDialogFragment.OnConfirmListener 
 
     override fun onToggleCoupon(bool: Boolean) {
         val dev = BuildConfig.DEVELOPER_ID
-        val token = PreferenceUtil.loadToken(activity)
+        val token = PreferenceUtil(activity).token
         val body = createBody(hdoInfo.hdoServiceCode, bool)
         compositeSubscription.add(putToggleCoupon(dev, token, body))
     }
