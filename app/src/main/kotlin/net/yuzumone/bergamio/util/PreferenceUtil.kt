@@ -10,7 +10,7 @@ class PreferenceUtil(context: Context) {
     private val EXPIRE = "expire"
 
     var token: String
-    get() = preference.getString(TOKEN, null)
+    get() = preference.getString(TOKEN, "")
     set(value) = preference.edit().putString(TOKEN, value).apply()
 
     val hasAvailableToken: Boolean
