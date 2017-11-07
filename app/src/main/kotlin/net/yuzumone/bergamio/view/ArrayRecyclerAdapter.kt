@@ -8,11 +8,7 @@ import java.util.*
 abstract class ArrayRecyclerAdapter<T, VH : RecyclerView.ViewHolder>(val context: Context) :
         RecyclerView.Adapter<VH>(), Iterable<T> {
 
-    protected val list: ArrayList<T>
-
-    init {
-        this.list = ArrayList()
-    }
+    protected val list: ArrayList<T> = ArrayList()
 
     @UiThread
     fun reset(items: Collection<T>) {
