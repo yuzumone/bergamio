@@ -9,4 +9,5 @@
     <string name="coupon_on">Coupon: ON</string>
     <string name="coupon_off">Coupon: OFF</string>
     <string name="success">成功</string>
+    <string name="settings">Settings</string>
 </resources>
