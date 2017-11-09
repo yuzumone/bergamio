@@ -4,9 +4,7 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import net.yuzumone.bergamio.BuildConfig
 import net.yuzumone.bergamio.R
@@ -62,6 +60,7 @@ class CouponInfoListFragment : BaseFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_coupon_info_list, container, false)
         getComponent().inject(this)
         initView()
+        setHasOptionsMenu(true)
         return binding.root
     }
 
@@ -121,6 +120,20 @@ class CouponInfoListFragment : BaseFragment() {
         } else {
             adapter.addAllWithNotify(couponInfo)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        activity.menuInflater.inflate(R.menu.menu_main, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        when (item?.itemId) {
+            R.id.menu_settings -> {
+                // TODO
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onDestroyView() {
