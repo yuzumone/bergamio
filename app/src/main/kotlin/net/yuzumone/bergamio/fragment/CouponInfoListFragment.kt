@@ -129,7 +129,9 @@ class CouponInfoListFragment : BaseFragment() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menu_settings -> {
-                // TODO
+                val fragment = AppShortcutsSettingFragment.newInstance(couponInfo)
+                fragmentManager.beginTransaction().replace(R.id.content, fragment)
+                        .addToBackStack(null).commit()
                 return true
             }
         }
