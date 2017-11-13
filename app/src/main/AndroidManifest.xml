@@ -30,5 +30,9 @@
                 <data android:scheme="${scheme}" android:host="${host}"/>
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.AppShortcutActivity"
+            android:theme="@style/TransparentTheme"
+            />
     </application>
 </manifest>
