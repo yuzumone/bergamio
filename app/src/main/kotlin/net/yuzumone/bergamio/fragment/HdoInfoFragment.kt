@@ -1,6 +1,8 @@
 package net.yuzumone.bergamio.fragment
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -25,7 +27,7 @@ import rx.subscriptions.CompositeSubscription
 import java.util.*
 import javax.inject.Inject
 
-class HdoInfoFragment : BaseFragment(), ConfirmDialogFragment.OnConfirmListener {
+class HdoInfoFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHdoInfoBinding
     private lateinit var hdoInfo: HdoInfo
@@ -35,8 +37,9 @@ class HdoInfoFragment : BaseFragment(), ConfirmDialogFragment.OnConfirmListener 
     @Inject lateinit var compositeSubscription: CompositeSubscription
 
     companion object {
-        val ARG_HDO_INFO = "hdo_info"
-        val ARG_PACKET_LOG = "packet_log"
+        private const val ARG_HDO_INFO = "hdo_info"
+        private const val ARG_PACKET_LOG = "packet_log"
+        private const val CONFIRM_DIALOG_REQUEST = 3939
         fun newInstance(hdoInfo: HdoInfo, packetLogs: ArrayList<PacketLog>): HdoInfoFragment {
             return HdoInfoFragment().apply {
                 arguments = Bundle().apply {
@@ -79,7 +82,8 @@ class HdoInfoFragment : BaseFragment(), ConfirmDialogFragment.OnConfirmListener 
             val switch = view as Switch
             val bool = switch.isChecked
             switch.isChecked = !bool
-            val fragment = ConfirmDialogFragment.newInstance(this, bool)
+            val fragment = ConfirmDialogFragment
+                    .newInstance(this, CONFIRM_DIALOG_REQUEST, bool, hdoInfo)
             fragment.show(fragmentManager, "confirm")
         }
         val text = if (hdoInfo.couponUse) getString(R.string.coupon_on) else getString(R.string.coupon_off)
@@ -111,10 +115,24 @@ class HdoInfoFragment : BaseFragment(), ConfirmDialogFragment.OnConfirmListener 
                 )
     }
 
-    override fun onToggleCoupon(bool: Boolean) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        when (requestCode) {
+            CONFIRM_DIALOG_REQUEST -> {
+                if (resultCode == Activity.RESULT_OK) {
+                    if (data == null) return
+                    val useCoupon = data
+                            .getBooleanExtra(ConfirmDialogFragment.ARG_USE_COUPON, false)
+                    toggle(useCoupon)
+                }
+            }
+        }
+    }
+
+    private fun toggle(useCoupon: Boolean) {
         val dev = BuildConfig.DEVELOPER_ID
         val token = PreferenceUtil(activity).token
-        val body = createBody(hdoInfo.hdoServiceCode, bool)
+        val body = createBody(hdoInfo.hdoServiceCode, useCoupon)
         compositeSubscription.add(putToggleCoupon(dev, token, body))
     }
 
