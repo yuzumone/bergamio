@@ -23,7 +23,7 @@ class ConfirmDialogFragment : DialogFragment() {
     companion object {
         const val ARG_USE_COUPON = "use_coupon"
         const val ARG_HDO_INFO = "hdo_info"
-        fun newInstance(fragment: Fragment, request: Int, useCoupon: Boolean, hdoInfo: HdoInfo): ConfirmDialogFragment {
+        fun newInstance(fragment: Fragment?, request: Int, useCoupon: Boolean, hdoInfo: HdoInfo): ConfirmDialogFragment {
             return ConfirmDialogFragment().apply {
                 setTargetFragment(fragment, request)
                 arguments = Bundle().apply {
@@ -52,10 +52,11 @@ class ConfirmDialogFragment : DialogFragment() {
     }
 
     private fun cancel() {
+        val result = Intent()
         if (targetFragment != null) {
-            targetFragment.onActivityResult(targetRequestCode, Activity.RESULT_CANCELED, null)
+            targetFragment.onActivityResult(targetRequestCode, Activity.RESULT_CANCELED, result)
         } else {
-            val pendingResult = activity.createPendingResult(targetRequestCode, null,
+            val pendingResult = activity.createPendingResult(targetRequestCode, result,
                     PendingIntent.FLAG_ONE_SHOT)
             try {
                 pendingResult.send(Activity.RESULT_CANCELED)
@@ -67,6 +68,7 @@ class ConfirmDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val message = if (useCoupon) getString(R.string.confirm_on) else getString(R.string.confirm_off)
+        this.isCancelable = false
         return AlertDialog.Builder(activity)
                 .setMessage(message)
                 .setPositiveButton("OK") { dialog, which ->
