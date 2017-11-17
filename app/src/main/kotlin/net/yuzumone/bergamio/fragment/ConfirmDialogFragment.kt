@@ -3,6 +3,7 @@ package net.yuzumone.bergamio.fragment
 import android.app.Activity
 import android.app.Dialog
 import android.app.PendingIntent
+import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
@@ -78,5 +79,12 @@ class ConfirmDialogFragment : DialogFragment() {
                     cancel()
                 }
                 .create()
+    }
+
+    override fun onDismiss(dialog: DialogInterface?) {
+        super.onDismiss(dialog)
+        if (activity is DialogInterface.OnDismissListener) {
+            (activity as DialogInterface.OnDismissListener).onDismiss(dialog)
+        }
     }
 }

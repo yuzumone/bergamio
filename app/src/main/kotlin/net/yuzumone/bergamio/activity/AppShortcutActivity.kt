@@ -2,11 +2,11 @@ package net.yuzumone.bergamio.activity
 
 import android.app.Activity
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import net.yuzumone.bergamio.BuildConfig
@@ -28,7 +28,7 @@ import rx.schedulers.Schedulers
 import rx.subscriptions.CompositeSubscription
 import javax.inject.Inject
 
-class AppShortcutActivity : AppCompatActivity() {
+class AppShortcutActivity : AppCompatActivity(), DialogInterface.OnDismissListener {
 
     private lateinit var binding: ActivityAppShortcutBinding
     private val number: String by lazy {
@@ -37,6 +37,7 @@ class AppShortcutActivity : AppCompatActivity() {
     private val pref: PreferenceUtil by lazy {
         PreferenceUtil(this)
     }
+    private var isCanceled = false
     @Inject lateinit var client: MioponClient
     @Inject lateinit var compositeSubscription: CompositeSubscription
 
@@ -68,7 +69,6 @@ class AppShortcutActivity : AppCompatActivity() {
                     if (data == null) return
                     val hdoInfo = data
                             .getParcelableExtra<HdoInfo>(ConfirmDialogFragment.ARG_HDO_INFO)
-                    Log.d("test", hdoInfo.toString())
                     val useCoupon = data
                             .getBooleanExtra(ConfirmDialogFragment.ARG_USE_COUPON, false)
                     val body = createBody(hdoInfo.hdoServiceCode, useCoupon)
@@ -76,7 +76,7 @@ class AppShortcutActivity : AppCompatActivity() {
                     val token = pref.token
                     compositeSubscription.add(putToggleCoupon(dev, token, body))
                 } else if (resultCode == Activity.RESULT_CANCELED) {
-                    finish()
+                    isCanceled = true
                 }
             }
         }
@@ -130,6 +130,10 @@ class AppShortcutActivity : AppCompatActivity() {
                             finish()
                         }
                 )
+    }
+
+    override fun onDismiss(dialog: DialogInterface?) {
+        if (isCanceled) finish()
     }
 
     override fun finish() {
