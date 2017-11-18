@@ -24,8 +24,8 @@ android {
         applicationId "net.yuzumone.bergamio"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [scheme: SCHEME, host: HOST]
         buildConfigField 'String', 'DEVELOPER_ID', DEVELOPER_ID
