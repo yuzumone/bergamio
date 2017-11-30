@@ -123,22 +123,22 @@ class AppShortcutActivity : AppCompatActivity(), DialogInterface.OnDismissListen
                 .subscribe (
                         {
                             Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show()
-                            finish()
+                            finishAndRemoveTask()
                         },
                         { error ->
                             Toast.makeText(this, error.message, Toast.LENGTH_SHORT).show()
-                            finish()
+                            finishAndRemoveTask()
                         }
                 )
     }
 
     override fun onDismiss(dialog: DialogInterface?) {
-        if (isCanceled) finish()
+        if (isCanceled) finishAndRemoveTask()
     }
 
-    override fun finish() {
-        super.finish()
+    override fun finishAndRemoveTask() {
         overridePendingTransition(0, 0)
+        super.finishAndRemoveTask()
     }
 
     override fun onDestroy() {
