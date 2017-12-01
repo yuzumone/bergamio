@@ -18,23 +18,18 @@ import java.util.*
 class CouponFragment : BaseFragment() {
 
     private lateinit var binding: FragmentCouponBinding
-    private lateinit var coupons: ArrayList<Coupon>
+    private val coupons: List<Coupon> by lazy {
+        arguments.getParcelableArrayList<Coupon>(ARG_COUPON)
+    }
 
     companion object {
-        val ARG_COUPON = "coupon"
+        private const val ARG_COUPON = "coupon"
         fun newInstance(coupon: ArrayList<Coupon>): CouponFragment {
             return CouponFragment().apply {
                 arguments = Bundle().apply {
                     putParcelableArrayList(ARG_COUPON, coupon)
                 }
             }
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            coupons = arguments.getParcelableArrayList(ARG_COUPON)
         }
     }
 
@@ -63,5 +58,4 @@ class CouponFragment : BaseFragment() {
             holder.binding.coupon = item
         }
     }
-
 }
