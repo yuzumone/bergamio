@@ -40,7 +40,7 @@ class CouponInfoListFragment : BaseFragment() {
     @Inject lateinit var compositeSubscription: CompositeSubscription
 
     companion object {
-        val TAG = "coupon_info_list"
+        val TAG: String = CouponInfoListFragment::class.java.simpleName
     }
 
     override fun onAttach(context: Context?) {
@@ -96,10 +96,10 @@ class CouponInfoListFragment : BaseFragment() {
                 .doOnCompleted { binding.swipeRefresh.isRefreshing = false }
                 .subscribe (
                         { (coupon, log) ->
-                            couponInfo = ArrayList<CouponInfo>(coupon.couponInfo)
+                            couponInfo = ArrayList(coupon.couponInfo)
                             adapter.addAllWithNotify(couponInfo)
                             shouldRefresh = false
-                            packetLogs = ArrayList<PacketLogInfo>(log.packetLogInfo)
+                            packetLogs = ArrayList(log.packetLogInfo)
                         },
                         { error ->
                             Toast.makeText(activity, error.message, Toast.LENGTH_SHORT).show()
@@ -113,7 +113,7 @@ class CouponInfoListFragment : BaseFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        if ((couponInfo.size == 0 && packetLogs.size == 0) || shouldRefresh) {
+        if ((couponInfo.isEmpty() && packetLogs.isEmpty()) || shouldRefresh) {
             val dev = BuildConfig.DEVELOPER_ID
             val token = PreferenceUtil(activity).token
             compositeSubscription.add(fetch(dev, token))
