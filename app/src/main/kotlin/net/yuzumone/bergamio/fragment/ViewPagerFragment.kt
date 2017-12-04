@@ -19,14 +19,18 @@ import java.util.*
 class ViewPagerFragment : Fragment() {
 
     private lateinit var binding: FragmentViewpagerBinding
-    private lateinit var couponInfo: CouponInfo
-    private lateinit var packetLogInfo: PacketLogInfo
     private lateinit var adapter: ViewPagerAdapter
     private lateinit var listener: OnToggleElevationListener
+    private val couponInfo: CouponInfo by lazy {
+        arguments.getParcelable<CouponInfo>(ARG_COUPON_INFO)
+    }
+    private val packetLogInfo: PacketLogInfo by lazy {
+        arguments.getParcelable<PacketLogInfo>(ARG_PACKET_LOG)
+    }
 
     companion object {
-        val ARG_COUPON_INFO = "coupon_info"
-        val ARG_PACKET_LOG = "packet_log"
+        private const val ARG_COUPON_INFO = "coupon_info"
+        private const val ARG_PACKET_LOG = "packet_log"
         fun newInstance(couponInfo: CouponInfo, packetLog: PacketLogInfo): ViewPagerFragment {
             return ViewPagerFragment().apply {
                 arguments = Bundle().apply {
@@ -41,14 +45,6 @@ class ViewPagerFragment : Fragment() {
         super.onAttach(context)
         if (context is OnToggleElevationListener) {
             listener = context
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            couponInfo = arguments.getParcelable(ARG_COUPON_INFO)
-            packetLogInfo = arguments.getParcelable(ARG_PACKET_LOG)
         }
     }
 
