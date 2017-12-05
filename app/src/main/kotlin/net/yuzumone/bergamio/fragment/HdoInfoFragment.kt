@@ -30,11 +30,15 @@ import javax.inject.Inject
 class HdoInfoFragment : BaseFragment() {
 
     private lateinit var binding: FragmentHdoInfoBinding
-    private lateinit var hdoInfo: HdoInfo
-    private lateinit var packetLogs: ArrayList<PacketLog>
     private lateinit var listener: OnRefreshCouponInfoListener
     @Inject lateinit var client: MioponClient
     @Inject lateinit var compositeSubscription: CompositeSubscription
+    private val hdoInfo: HdoInfo by lazy {
+        arguments.getParcelable<HdoInfo>(ARG_HDO_INFO)
+    }
+    private val packetLogs: ArrayList<PacketLog> by lazy {
+        arguments.getParcelableArrayList<PacketLog>(ARG_PACKET_LOG)
+    }
 
     companion object {
         private const val ARG_HDO_INFO = "hdo_info"
@@ -54,14 +58,6 @@ class HdoInfoFragment : BaseFragment() {
         super.onAttach(context)
         if (context is OnRefreshCouponInfoListener) {
             listener = context
-        }
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (arguments != null) {
-            hdoInfo = arguments.getParcelable(ARG_HDO_INFO)
-            packetLogs = arguments.getParcelableArrayList(ARG_PACKET_LOG)
         }
     }
 
@@ -101,7 +97,7 @@ class HdoInfoFragment : BaseFragment() {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe (
-                        { response ->
+                        {
                             Toast.makeText(activity, getString(R.string.success), Toast.LENGTH_SHORT).show()
                             val bool = binding.switchCoupon.isChecked
                             binding.switchCoupon.isChecked = !bool
@@ -157,5 +153,4 @@ class HdoInfoFragment : BaseFragment() {
             holder.binding.log = item
         }
     }
-
 }
