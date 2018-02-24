@@ -16,7 +16,6 @@ def REDIRECT_URI = "\"${getSecretProperty('REDIRECT_URI')}\""
 
 android {
     compileSdkVersion 26
-    buildToolsVersion "26.0.2"
     dataBinding {
         enabled = true
     }
