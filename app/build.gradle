@@ -15,14 +15,14 @@ def DEVELOPER_ID = "\"${getSecretProperty('DEVELOPER_ID')}\""
 def REDIRECT_URI = "\"${getSecretProperty('REDIRECT_URI')}\""
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     dataBinding {
         enabled = true
     }
     defaultConfig {
         applicationId "net.yuzumone.bergamio"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 4
         versionName "1.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
