@@ -46,7 +46,7 @@ android {
     }
 }
 
-ext.support_lib_version = '26.1.0'
+ext.support_lib_version = '27.0.2'
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
