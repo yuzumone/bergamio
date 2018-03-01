@@ -56,9 +56,15 @@ class AppShortcutActivity : AppCompatActivity(), DialogInterface.OnDismissListen
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_app_shortcut)
         getComponent().inject(this)
-        val dev = BuildConfig.DEVELOPER_ID
-        val token = pref.token
-        compositeSubscription.add(fetch(dev, token))
+        if (PreferenceUtil(this).hasAvailableToken) {
+            val dev = BuildConfig.DEVELOPER_ID
+            val token = pref.token
+            compositeSubscription.add(fetch(dev, token))
+        } else {
+            val intent = Intent(this, AuthActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
