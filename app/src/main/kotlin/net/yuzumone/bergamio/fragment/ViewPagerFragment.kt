@@ -22,10 +22,10 @@ class ViewPagerFragment : Fragment() {
     private lateinit var adapter: ViewPagerAdapter
     private lateinit var listener: OnToggleElevationListener
     private val couponInfo: CouponInfo by lazy {
-        arguments.getParcelable<CouponInfo>(ARG_COUPON_INFO)
+        arguments!!.getParcelable<CouponInfo>(ARG_COUPON_INFO)
     }
     private val packetLogInfo: PacketLogInfo by lazy {
-        arguments.getParcelable<PacketLogInfo>(ARG_PACKET_LOG)
+        arguments!!.getParcelable<PacketLogInfo>(ARG_PACKET_LOG)
     }
 
     companion object {
@@ -48,14 +48,14 @@ class ViewPagerFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_viewpager, container, false)
         initView()
         return binding.root
     }
 
     private fun initView() {
-        activity.title = couponInfo.hddServiceCode
+        activity!!.title = couponInfo.hddServiceCode
         listener.onToggleElevation(false)
         adapter = ViewPagerAdapter(childFragmentManager)
         binding.pager.adapter = adapter

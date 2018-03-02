@@ -19,7 +19,7 @@ class CouponFragment : BaseFragment() {
 
     private lateinit var binding: FragmentCouponBinding
     private val coupons: List<Coupon> by lazy {
-        arguments.getParcelableArrayList<Coupon>(ARG_COUPON)
+        arguments!!.getParcelableArrayList<Coupon>(ARG_COUPON)
     }
 
     companion object {
@@ -33,14 +33,14 @@ class CouponFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_coupon, container, false)
         initView()
         return binding.root
     }
 
     private fun initView() {
-        val adapter = CouponAdapter(activity)
+        val adapter = CouponAdapter(activity!!)
         adapter.addAllWithNotify(coupons)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
