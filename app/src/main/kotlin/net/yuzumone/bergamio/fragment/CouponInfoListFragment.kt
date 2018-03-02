@@ -56,7 +56,7 @@ class CouponInfoListFragment : BaseFragment() {
         packetLogs = ArrayList()
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_coupon_info_list, container, false)
         getComponent().inject(this)
         initView()
@@ -65,20 +65,20 @@ class CouponInfoListFragment : BaseFragment() {
     }
 
     private fun initView() {
-        activity.title = activity.getString(R.string.app_name)
+        activity!!.title = getString(R.string.app_name)
         listener.onToggleElevation(true)
         binding.swipeRefresh.isEnabled = false
         binding.swipeRefresh.setColorSchemeResources(R.color.colorPrimary)
-        adapter = CouponInfoAdapter(activity)
+        adapter = CouponInfoAdapter(activity!!)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
         binding.recyclerView.addOnItemTouchListener(
-                RecyclerItemClickListener(activity, object: RecyclerItemClickListener.OnItemClickListener {
+                RecyclerItemClickListener(activity!!, object: RecyclerItemClickListener.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int) {
                         val info = adapter.getItem(position)
                         val log = packetLogs[position]
                         val fragment = ViewPagerFragment.newInstance(info, log)
-                        fragmentManager.beginTransaction().replace(R.id.content, fragment)
+                        fragmentManager!!.beginTransaction().replace(R.id.content, fragment)
                                 .addToBackStack(null).commit()
                     }
                 })
@@ -115,7 +115,7 @@ class CouponInfoListFragment : BaseFragment() {
         super.onActivityCreated(savedInstanceState)
         if ((couponInfo.isEmpty() && packetLogs.isEmpty()) || shouldRefresh) {
             val dev = BuildConfig.DEVELOPER_ID
-            val token = PreferenceUtil(activity).token
+            val token = PreferenceUtil(activity!!).token
             compositeSubscription.add(fetch(dev, token))
         } else {
             adapter.addAllWithNotify(couponInfo)
@@ -123,14 +123,14 @@ class CouponInfoListFragment : BaseFragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        activity.menuInflater.inflate(R.menu.menu_main, menu)
+        inflater?.inflate(R.menu.menu_main, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.menu_settings -> {
                 val fragment = AppShortcutsSettingFragment.newInstance(couponInfo)
-                fragmentManager.beginTransaction().replace(R.id.content, fragment)
+                fragmentManager!!.beginTransaction().replace(R.id.content, fragment)
                         .addToBackStack(null).commit()
                 return true
             }

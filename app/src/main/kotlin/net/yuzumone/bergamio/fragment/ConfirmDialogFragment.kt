@@ -15,10 +15,10 @@ import net.yuzumone.bergamio.model.HdoInfo
 class ConfirmDialogFragment : DialogFragment() {
 
     private val useCoupon by lazy {
-        arguments.getBoolean(ARG_USE_COUPON)
+        arguments!!.getBoolean(ARG_USE_COUPON)
     }
     private val hdoInfo: HdoInfo by lazy {
-        arguments.getParcelable<HdoInfo>(ARG_HDO_INFO)
+        arguments!!.getParcelable<HdoInfo>(ARG_HDO_INFO)
     }
 
     companion object {
@@ -40,9 +40,9 @@ class ConfirmDialogFragment : DialogFragment() {
         result.putExtra(ARG_HDO_INFO, hdoInfo)
         result.putExtra(ARG_USE_COUPON, useCoupon)
         if (targetFragment != null) {
-            targetFragment.onActivityResult(targetRequestCode, Activity.RESULT_OK, result)
+            targetFragment!!.onActivityResult(targetRequestCode, Activity.RESULT_OK, result)
         } else {
-            val pendingResult = activity.createPendingResult(targetRequestCode, result,
+            val pendingResult = activity!!.createPendingResult(targetRequestCode, result,
                     PendingIntent.FLAG_ONE_SHOT)
             try {
                 pendingResult.send(Activity.RESULT_OK)
@@ -55,9 +55,9 @@ class ConfirmDialogFragment : DialogFragment() {
     private fun cancel() {
         val result = Intent()
         if (targetFragment != null) {
-            targetFragment.onActivityResult(targetRequestCode, Activity.RESULT_CANCELED, result)
+            targetFragment!!.onActivityResult(targetRequestCode, Activity.RESULT_CANCELED, result)
         } else {
-            val pendingResult = activity.createPendingResult(targetRequestCode, result,
+            val pendingResult = activity!!.createPendingResult(targetRequestCode, result,
                     PendingIntent.FLAG_ONE_SHOT)
             try {
                 pendingResult.send(Activity.RESULT_CANCELED)
@@ -70,7 +70,7 @@ class ConfirmDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val message = if (useCoupon) getString(R.string.confirm_on) else getString(R.string.confirm_off)
         this.isCancelable = false
-        return AlertDialog.Builder(activity)
+        return AlertDialog.Builder(activity!!)
                 .setMessage(message)
                 .setPositiveButton("OK") { dialog, which ->
                     toggleCoupon()

@@ -34,10 +34,10 @@ class HdoInfoFragment : BaseFragment() {
     @Inject lateinit var client: MioponClient
     @Inject lateinit var compositeSubscription: CompositeSubscription
     private val hdoInfo: HdoInfo by lazy {
-        arguments.getParcelable<HdoInfo>(ARG_HDO_INFO)
+        arguments!!.getParcelable<HdoInfo>(ARG_HDO_INFO)
     }
     private val packetLogs: ArrayList<PacketLog> by lazy {
-        arguments.getParcelableArrayList<PacketLog>(ARG_PACKET_LOG)
+        arguments!!.getParcelableArrayList<PacketLog>(ARG_PACKET_LOG)
     }
 
     companion object {
@@ -61,7 +61,7 @@ class HdoInfoFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_hdo_info, container, false)
         getComponent().inject(this)
         initView()
@@ -69,7 +69,7 @@ class HdoInfoFragment : BaseFragment() {
     }
 
     private fun initView() {
-        val adapter = PacketLogAdapter(activity)
+        val adapter = PacketLogAdapter(activity!!)
         adapter.addAllWithNotify(packetLogs)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -127,7 +127,7 @@ class HdoInfoFragment : BaseFragment() {
 
     private fun toggle(useCoupon: Boolean) {
         val dev = BuildConfig.DEVELOPER_ID
-        val token = PreferenceUtil(activity).token
+        val token = PreferenceUtil(activity!!).token
         val body = createBody(hdoInfo.hdoServiceCode, useCoupon)
         compositeSubscription.add(putToggleCoupon(dev, token, body))
     }

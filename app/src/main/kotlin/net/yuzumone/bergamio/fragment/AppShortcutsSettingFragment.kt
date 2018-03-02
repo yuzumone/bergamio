@@ -24,7 +24,7 @@ class AppShortcutsSettingFragment : Fragment() {
     private lateinit var binding: FragmentAppShortcutsSettingBinding
     private val childViewList = ArrayList<ItemHdoInfoBinding>()
     private val couponInfoList: List<CouponInfo> by lazy {
-        arguments.getParcelableArrayList<CouponInfo>(ARG_COUPON_INFO)
+        arguments!!.getParcelableArrayList<CouponInfo>(ARG_COUPON_INFO)
     }
 
     companion object {
@@ -38,7 +38,7 @@ class AppShortcutsSettingFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_app_shortcuts_setting, container, false)
         return binding.root
     }
@@ -54,13 +54,13 @@ class AppShortcutsSettingFragment : Fragment() {
                     removeShortcut(child.hdo)
                 }
             }
-            activity.onBackPressed()
+            activity!!.onBackPressed()
         }
     }
 
     @TargetApi(Build.VERSION_CODES.N_MR1)
     private fun initializeList() {
-        val shortcutManager = activity.getSystemService(ShortcutManager::class.java)
+        val shortcutManager = activity!!.getSystemService(ShortcutManager::class.java)
         val shortcuts = shortcutManager.dynamicShortcuts
         val inflater = LayoutInflater.from(activity)
         couponInfoList.forEach { couponInfo ->
@@ -82,20 +82,20 @@ class AppShortcutsSettingFragment : Fragment() {
     @TargetApi(Build.VERSION_CODES.N_MR1)
     private fun addShortcut(hdoInfo: HdoInfo?) {
         if (hdoInfo == null) return
-        val intent = AppShortcutActivity.creteIntent(activity, hdoInfo.number)
+        val intent = AppShortcutActivity.creteIntent(activity!!, hdoInfo.number)
         val shortcut = ShortcutInfo.Builder(activity, hdoInfo.number)
                 .setShortLabel(hdoInfo.number)
                 .setIcon(Icon.createWithResource(context, R.mipmap.ic_app_shortcut))
                 .setIntent(intent)
                 .build()
-        val shortcutManager = activity.getSystemService(ShortcutManager::class.java)
+        val shortcutManager = activity!!.getSystemService(ShortcutManager::class.java)
         shortcutManager.dynamicShortcuts = Arrays.asList(shortcut)
     }
 
     @TargetApi(Build.VERSION_CODES.N_MR1)
     private fun removeShortcut(hdoInfo: HdoInfo?) {
         if (hdoInfo == null) return
-        val shortcutManager = activity.getSystemService(ShortcutManager::class.java)
+        val shortcutManager = activity!!.getSystemService(ShortcutManager::class.java)
         shortcutManager.removeDynamicShortcuts(Arrays.asList(hdoInfo.number))
     }
 }
