@@ -9,25 +9,25 @@ import net.yuzumone.bergamio.model.HdoInfo
 
 object BindingAdapter {
 
-    @BindingAdapter("app:usage")
+    @BindingAdapter("usage")
     @JvmStatic
     fun setUsage(view: TextView, usage: Int) {
         view.text = view.context.getString(R.string.mb, usage)
     }
 
-    @BindingAdapter("app:type_expire")
+    @BindingAdapter("type_expire")
     @JvmStatic
     fun setTypeExpire(view: TextView, coupon: Coupon) {
         view.text = view.context.getString(R.string.type_expire, coupon.type, coupon.expire)
     }
 
-    @BindingAdapter("app:number")
+    @BindingAdapter("number")
     @JvmStatic
     fun setNumber(view: TextView, couponInfo: CouponInfo) {
         view.text = couponInfo.hdoInfo.joinToString(transform = HdoInfo::number, separator = "\n")
     }
 
-    @BindingAdapter("app:total")
+    @BindingAdapter("total")
     @JvmStatic
     fun setTotal(view: TextView, couponInfo: CouponInfo) {
         view.text = view.context.getString(R.string.mb, couponInfo.coupon.sumBy { it.volume })
