@@ -10,6 +10,6 @@ class FragmentModule(val fragment: Fragment) {
 
     @Provides
     fun provideContext(): Context {
-        return fragment.context
+        return fragment.context!!
     }
 }
