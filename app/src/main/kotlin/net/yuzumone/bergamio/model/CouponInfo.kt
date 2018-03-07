@@ -1,16 +1,14 @@
 package net.yuzumone.bergamio.model
 
-import paperparcel.PaperParcel
-import paperparcel.PaperParcelable
+import android.annotation.SuppressLint
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-@PaperParcel
+@SuppressLint("ParcelCreator")
+@Parcelize
 data class CouponInfo(
         val hddServiceCode: String,
         val plan: String,
         val hdoInfo: List<HdoInfo>,
         val coupon: List<Coupon>
-): PaperParcelable {
-    companion object {
-        @JvmField val CREATOR = PaperParcelCouponInfo.CREATOR
-    }
-}
+): Parcelable
