@@ -1,11 +1,9 @@
 package net.yuzumone.bergamio.model
 
-import paperparcel.PaperParcel
-import paperparcel.PaperParcelable
+import android.annotation.SuppressLint
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-@PaperParcel
-data class LogHdoInfo(val hdoServiceCode: String, val packetLog: List<PacketLog>): PaperParcelable {
-    companion object {
-        @JvmField val CREATOR = PaperParcelLogHdoInfo.CREATOR
-    }
-}
+@SuppressLint("ParcelCreator")
+@Parcelize
+data class LogHdoInfo(val hdoServiceCode: String, val packetLog: List<PacketLog>): Parcelable
