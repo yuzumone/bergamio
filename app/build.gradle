@@ -20,6 +20,9 @@ android {
     dataBinding {
         enabled = true
     }
+    androidExtensions {
+        experimental = true
+    }
     defaultConfig {
         applicationId "net.yuzumone.bergamio"
         minSdkVersion 21
