@@ -23,8 +23,7 @@ class AuthActivity : AppCompatActivity() {
         val clientId = BuildConfig.DEVELOPER_ID
         val redirect = BuildConfig.REDIRECT_URI
         val uri = "https://api.iijmio.jp/mobile/d/v1/authorization/" +
-                "?response_type=token&state=state" +
-                "&client_id=$clientId" + "&redirect_uri=$redirect"
+                "?response_type=token&state=state&client_id=$clientId&redirect_uri=$redirect"
         binding.buttonAuth.setOnClickListener {
             val intent = Intent(Intent.ACTION_VIEW, Uri.parse(uri))
             startActivity(intent)
@@ -38,10 +37,8 @@ class AuthActivity : AppCompatActivity() {
         val fragment = intent.data.fragment
         val token = getToken(fragment)
         val expire = getExpire(fragment)
-        if (token != "" && expire != "") {
-            val pref = PreferenceUtil(this)
-            pref.token = token
-            pref.expire = expire.toLong()
+        if (token != "" && expire != 0L) {
+            storeData(token, expire)
             val mainActivityIntent = Intent(this, MainActivity::class.java)
             startActivity(mainActivityIntent)
             finish()
@@ -53,20 +50,26 @@ class AuthActivity : AppCompatActivity() {
     private fun getToken(string: String): String {
         val p = Pattern.compile("(access_token=)(\\w+)")
         val m = p.matcher(string)
-        if (m.find()) {
-            return m.group(2)
+        return if (m.find()) {
+            m.group(2)
         } else {
-            return ""
+            ""
         }
     }
 
-    private fun getExpire(string: String): String {
+    private fun getExpire(string: String): Long {
         val p = Pattern.compile("(expires_in=)(\\d+)")
         val m = p.matcher(string)
-        if (m.find()) {
-            return m.group(2)
+        return if (m.find()) {
+            m.group(2).toLong()
         } else {
-            return ""
+            0L
         }
+    }
+
+    private fun storeData(token: String, expire: Long) {
+        val pref = PreferenceUtil(this)
+        pref.token = token
+        pref.expire = expire
     }
 }
