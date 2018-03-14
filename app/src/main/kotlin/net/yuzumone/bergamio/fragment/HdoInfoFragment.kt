@@ -144,8 +144,8 @@ class HdoInfoFragment : BaseFragment() {
     class PacketLogAdapter(context: Context) : ArrayRecyclerAdapter<PacketLog,
             BindingHolder<ItemPacketLogBinding>>(context) {
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemPacketLogBinding> {
-            return BindingHolder(context, parent!!, R.layout.item_packet_log)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemPacketLogBinding> {
+            return BindingHolder(context, parent, R.layout.item_packet_log)
         }
 
         override fun onBindViewHolder(holder: BindingHolder<ItemPacketLogBinding>, position: Int) {

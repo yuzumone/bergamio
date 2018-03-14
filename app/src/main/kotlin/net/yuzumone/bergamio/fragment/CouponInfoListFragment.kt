@@ -152,8 +152,8 @@ class CouponInfoListFragment : BaseFragment() {
     class CouponInfoAdapter(context: Context) : ArrayRecyclerAdapter<CouponInfo,
             BindingHolder<ItemCouponInfoBinding>>(context) {
 
-        override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): BindingHolder<ItemCouponInfoBinding> {
-            return BindingHolder(context, parent!!, R.layout.item_coupon_info)
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BindingHolder<ItemCouponInfoBinding> {
+            return BindingHolder(context, parent, R.layout.item_coupon_info)
         }
 
         override fun onBindViewHolder(holder: BindingHolder<ItemCouponInfoBinding>, position: Int) {
