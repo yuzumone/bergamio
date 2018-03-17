@@ -3,7 +3,7 @@
 [![language kotlin](https://img.shields.io/badge/language-kotlin-green.svg)](#)
 [![minSdkVersion 21](https://img.shields.io/badge/minSdkVersion-21-red.svg)](#)
 [![compileSdkVersion 26](https://img.shields.io/badge/compileSdkVersion-26-yellow.svg)](#)
-[![version v1.1.1](https://img.shields.io/badge/version-v1.1.1-blue.svg)](#)
+[![version v1.1.2](https://img.shields.io/badge/version-v1.1.2-blue.svg)](#)
 
 ## Overview
 bergamio is IIJmio Mobile Service client application.  
