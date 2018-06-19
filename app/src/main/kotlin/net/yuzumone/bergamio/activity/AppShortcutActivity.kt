@@ -9,6 +9,10 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import net.yuzumone.bergamio.BuildConfig
 import net.yuzumone.bergamio.MainApp
 import net.yuzumone.bergamio.R
@@ -22,10 +26,7 @@ import net.yuzumone.bergamio.model.Toggle
 import net.yuzumone.bergamio.model.ToggleCouponInfo
 import net.yuzumone.bergamio.model.ToggleHdoInfo
 import net.yuzumone.bergamio.util.PreferenceUtil
-import rx.Subscription
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
-import rx.subscriptions.CompositeSubscription
+
 import javax.inject.Inject
 
 class AppShortcutActivity : AppCompatActivity(), DialogInterface.OnDismissListener {
@@ -39,7 +40,7 @@ class AppShortcutActivity : AppCompatActivity(), DialogInterface.OnDismissListen
     }
     private var isCanceled = false
     @Inject lateinit var client: MioponClient
-    @Inject lateinit var compositeSubscription: CompositeSubscription
+    @Inject lateinit var compositeDisposable: CompositeDisposable
 
     companion object {
         private const val ARG_NUMBER = "number"
@@ -59,7 +60,7 @@ class AppShortcutActivity : AppCompatActivity(), DialogInterface.OnDismissListen
         if (PreferenceUtil(this).hasAvailableToken) {
             val dev = BuildConfig.DEVELOPER_ID
             val token = pref.token
-            compositeSubscription.add(fetch(dev, token))
+            compositeDisposable.add(fetch(dev, token))
         } else {
             val intent = Intent(this, AuthActivity::class.java)
             startActivity(intent)
@@ -80,7 +81,7 @@ class AppShortcutActivity : AppCompatActivity(), DialogInterface.OnDismissListen
                     val body = createBody(hdoInfo.hdoServiceCode, useCoupon)
                     val dev = BuildConfig.DEVELOPER_ID
                     val token = pref.token
-                    compositeSubscription.add(putToggleCoupon(dev, token, body))
+                    compositeDisposable.add(putToggleCoupon(dev, token, body))
                 } else if (resultCode == Activity.RESULT_CANCELED) {
                     isCanceled = true
                 }
@@ -88,12 +89,12 @@ class AppShortcutActivity : AppCompatActivity(), DialogInterface.OnDismissListen
         }
     }
 
-    private fun fetch(developer: String, token: String): Subscription {
+    private fun fetch(developer: String, token: String): Disposable {
         return client.getCoupon(developer, token)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { binding.progress.visibility = View.VISIBLE }
-                .doOnCompleted { binding.progress.visibility = View.GONE }
+                .doOnComplete { binding.progress.visibility = View.GONE }
                 .subscribe (
                         { response ->
                             response.couponInfo.forEach coupon@ { couponInfo ->
@@ -120,12 +121,12 @@ class AppShortcutActivity : AppCompatActivity(), DialogInterface.OnDismissListen
         return ToggleCouponInfo(arrayListOf(hdoInfo))
     }
 
-    private fun putToggleCoupon(developer: String, token: String, body: ToggleCouponInfo): Subscription {
+    private fun putToggleCoupon(developer: String, token: String, body: ToggleCouponInfo): Disposable {
         return client.putToggleCoupon(developer, token, body)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { binding.progress.visibility = View.VISIBLE }
-                .doOnCompleted { binding.progress.visibility = View.GONE }
+                .doOnComplete { binding.progress.visibility = View.GONE }
                 .subscribe (
                         {
                             Toast.makeText(this, getString(R.string.success), Toast.LENGTH_SHORT).show()
@@ -148,7 +149,7 @@ class AppShortcutActivity : AppCompatActivity(), DialogInterface.OnDismissListen
     }
 
     override fun onDestroy() {
-        compositeSubscription.unsubscribe()
+        compositeDisposable.clear()
         super.onDestroy()
     }
 

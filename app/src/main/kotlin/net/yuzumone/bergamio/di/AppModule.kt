@@ -4,9 +4,9 @@ import android.app.Application
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import io.reactivex.disposables.CompositeDisposable
 import okhttp3.Cache
 import okhttp3.OkHttpClient
-import rx.subscriptions.CompositeSubscription
 import java.io.File
 import javax.inject.Singleton
 
@@ -34,7 +34,7 @@ class AppModule(private val application: Application) {
     }
 
     @Provides
-    fun provideCompositeSubscription(): CompositeSubscription {
-        return CompositeSubscription()
+    fun provideCompositeDisposable(): CompositeDisposable {
+        return CompositeDisposable()
     }
 }
