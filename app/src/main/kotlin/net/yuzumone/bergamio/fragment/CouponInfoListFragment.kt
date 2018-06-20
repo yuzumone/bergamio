@@ -6,6 +6,12 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.*
 import android.widget.Toast
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.functions.BiFunction
+import io.reactivex.schedulers.Schedulers
 import net.yuzumone.bergamio.BuildConfig
 import net.yuzumone.bergamio.R
 import net.yuzumone.bergamio.api.MioponClient
@@ -20,11 +26,6 @@ import net.yuzumone.bergamio.view.ArrayRecyclerAdapter
 import net.yuzumone.bergamio.view.BindingHolder
 import net.yuzumone.bergamio.view.OnToggleElevationListener
 import net.yuzumone.bergamio.view.RecyclerItemClickListener
-import rx.Observable
-import rx.Subscription
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
-import rx.subscriptions.CompositeSubscription
 import java.util.*
 import javax.inject.Inject
 
@@ -37,7 +38,7 @@ class CouponInfoListFragment : BaseFragment() {
     private lateinit var listener: OnToggleElevationListener
     private var shouldRefresh = false
     @Inject lateinit var client: MioponClient
-    @Inject lateinit var compositeSubscription: CompositeSubscription
+    @Inject lateinit var compositeDisposable: CompositeDisposable
 
     companion object {
         val TAG: String = CouponInfoListFragment::class.java.simpleName
@@ -85,15 +86,15 @@ class CouponInfoListFragment : BaseFragment() {
         )
     }
 
-    private fun fetch(developer: String, token: String): Subscription {
+    private fun fetch(developer: String, token: String): Disposable {
         return Observable.zip(
                 client.getCoupon(developer, token),
                 client.getLog(developer, token),
-                {coupon, log -> createResponseData(coupon, log)})
+                BiFunction { coupon: CouponResult, log: LogResult -> createResponseData(coupon, log) })
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe { binding.swipeRefresh.isRefreshing = true }
-                .doOnCompleted { binding.swipeRefresh.isRefreshing = false }
+                .doOnComplete { binding.swipeRefresh.isRefreshing = false }
                 .subscribe (
                         { (coupon, log) ->
                             couponInfo = ArrayList(coupon.couponInfo)
@@ -116,7 +117,7 @@ class CouponInfoListFragment : BaseFragment() {
         if ((couponInfo.isEmpty() && packetLogs.isEmpty()) || shouldRefresh) {
             val dev = BuildConfig.DEVELOPER_ID
             val token = PreferenceUtil(activity!!).token
-            compositeSubscription.add(fetch(dev, token))
+            compositeDisposable.add(fetch(dev, token))
         } else {
             adapter.addAllWithNotify(couponInfo)
         }
@@ -139,7 +140,7 @@ class CouponInfoListFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
-        compositeSubscription.unsubscribe()
+        compositeDisposable.clear()
         super.onDestroyView()
     }
 
