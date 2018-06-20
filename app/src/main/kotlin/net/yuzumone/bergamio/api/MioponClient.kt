@@ -1,14 +1,14 @@
 package net.yuzumone.bergamio.api
 
+import io.reactivex.Observable
 import net.yuzumone.bergamio.model.CouponResult
 import net.yuzumone.bergamio.model.LogResult
 import net.yuzumone.bergamio.model.ToggleCouponInfo
 import net.yuzumone.bergamio.model.ToggleResult
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
-import rx.Observable
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,7 +20,7 @@ class MioponClient @Inject constructor(client: OkHttpClient) {
     init {
         val uri = "https://api.iijmio.jp/mobile/d/v1/"
         val retrofit = Retrofit.Builder().client(client)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .addConverterFactory(MoshiConverterFactory.create())
                 .baseUrl(uri)
                 .build()

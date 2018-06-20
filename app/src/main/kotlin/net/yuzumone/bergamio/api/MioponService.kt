@@ -1,5 +1,6 @@
 package net.yuzumone.bergamio.api
 
+import io.reactivex.Observable
 import net.yuzumone.bergamio.model.CouponResult
 import net.yuzumone.bergamio.model.LogResult
 import net.yuzumone.bergamio.model.ToggleCouponInfo
@@ -8,7 +9,6 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.PUT
-import rx.Observable
 
 interface MioponService {
     @GET("coupon/")

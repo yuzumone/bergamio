@@ -11,6 +11,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.Toast
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import net.yuzumone.bergamio.BuildConfig
 import net.yuzumone.bergamio.R
 import net.yuzumone.bergamio.api.MioponClient
@@ -20,10 +24,6 @@ import net.yuzumone.bergamio.model.*
 import net.yuzumone.bergamio.util.PreferenceUtil
 import net.yuzumone.bergamio.view.ArrayRecyclerAdapter
 import net.yuzumone.bergamio.view.BindingHolder
-import rx.Subscription
-import rx.android.schedulers.AndroidSchedulers
-import rx.schedulers.Schedulers
-import rx.subscriptions.CompositeSubscription
 import java.util.*
 import javax.inject.Inject
 
@@ -32,7 +32,7 @@ class HdoInfoFragment : BaseFragment() {
     private lateinit var binding: FragmentHdoInfoBinding
     private lateinit var listener: OnRefreshCouponInfoListener
     @Inject lateinit var client: MioponClient
-    @Inject lateinit var compositeSubscription: CompositeSubscription
+    @Inject lateinit var compositeDisposable: CompositeDisposable
     private val hdoInfo: HdoInfo by lazy {
         arguments!!.getParcelable<HdoInfo>(ARG_HDO_INFO)
     }
@@ -92,7 +92,7 @@ class HdoInfoFragment : BaseFragment() {
         return ToggleCouponInfo(arrayListOf(hdoInfo))
     }
 
-    private fun putToggleCoupon(developer: String, token: String, body: ToggleCouponInfo): Subscription {
+    private fun putToggleCoupon(developer: String, token: String, body: ToggleCouponInfo): Disposable {
         return client.putToggleCoupon(developer, token, body)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -129,11 +129,11 @@ class HdoInfoFragment : BaseFragment() {
         val dev = BuildConfig.DEVELOPER_ID
         val token = PreferenceUtil(activity!!).token
         val body = createBody(hdoInfo.hdoServiceCode, useCoupon)
-        compositeSubscription.add(putToggleCoupon(dev, token, body))
+        compositeDisposable.add(putToggleCoupon(dev, token, body))
     }
 
     override fun onDestroyView() {
-        compositeSubscription.unsubscribe()
+        compositeDisposable.clear()
         super.onDestroyView()
     }
 
