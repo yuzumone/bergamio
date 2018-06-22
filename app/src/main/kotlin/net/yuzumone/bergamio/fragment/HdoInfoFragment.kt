@@ -11,6 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Switch
 import android.widget.Toast
+import com.github.mikephil.charting.data.Entry
+import com.github.mikephil.charting.data.LineData
+import com.github.mikephil.charting.data.LineDataSet
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -84,6 +87,29 @@ class HdoInfoFragment : BaseFragment() {
         }
         val text = if (hdoInfo.couponUse) getString(R.string.coupon_on) else getString(R.string.coupon_off)
         binding.textCoupon.text = text
+        invalidateChart()
+    }
+
+    private fun invalidateChart() {
+        binding.chart.apply {
+            xAxis.apply {
+                isEnabled = false
+            }
+            axisLeft.apply {
+                axisMinimum = 0f
+            }
+            axisRight.apply {
+                isEnabled = false
+            }
+        }
+        val entries = ArrayList<Entry>()
+        for ((index, value) in packetLogs.withIndex()) {
+            entries.add(Entry(index.toFloat(), value.withCoupon.toFloat()))
+        }
+        val dataSet = LineDataSet(entries, "withCoupon")
+        val lineData = LineData(dataSet)
+        binding.chart.data = lineData
+        binding.chart.invalidate()
     }
 
     private fun createBody(hdo: String, bool: Boolean): ToggleCouponInfo {
