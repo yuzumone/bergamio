@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.graphics.Color
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +20,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.notification_template_lines_media.view.*
 import net.yuzumone.bergamio.BuildConfig
 import net.yuzumone.bergamio.R
 import net.yuzumone.bergamio.api.MioponClient
@@ -92,13 +95,13 @@ class HdoInfoFragment : BaseFragment() {
 
     private fun invalidateChart() {
         binding.chart.apply {
-            xAxis.apply {
-                isEnabled = false
-            }
+            isClickable = false
+            description.isEnabled = false
+            legend.isEnabled = false
+            xAxis.isEnabled = false
+            axisRight.isEnabled = false
             axisLeft.apply {
                 axisMinimum = 0f
-            }
-            axisRight.apply {
                 isEnabled = false
             }
         }
@@ -107,6 +110,10 @@ class HdoInfoFragment : BaseFragment() {
             entries.add(Entry(index.toFloat(), value.withCoupon.toFloat()))
         }
         val dataSet = LineDataSet(entries, "withCoupon")
+        dataSet.color = ContextCompat.getColor(activity!!, R.color.colorAccent)
+        dataSet.lineWidth = 3f
+        dataSet.setDrawValues(false)
+        dataSet.setDrawCircles(false)
         val lineData = LineData(dataSet)
         binding.chart.data = lineData
         binding.chart.invalidate()
