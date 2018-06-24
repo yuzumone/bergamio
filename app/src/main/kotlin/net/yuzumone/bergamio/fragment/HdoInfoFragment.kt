@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -20,7 +19,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.notification_template_lines_media.view.*
 import net.yuzumone.bergamio.BuildConfig
 import net.yuzumone.bergamio.R
 import net.yuzumone.bergamio.api.MioponClient
@@ -114,6 +112,8 @@ class HdoInfoFragment : BaseFragment() {
         dataSet.lineWidth = 3f
         dataSet.setDrawValues(false)
         dataSet.setDrawCircles(false)
+        dataSet.setDrawFilled(true)
+        dataSet.fillDrawable = ContextCompat.getDrawable(activity!!, R.drawable.fade_amber)
         val lineData = LineData(dataSet)
         binding.chart.data = lineData
         binding.chart.invalidate()
