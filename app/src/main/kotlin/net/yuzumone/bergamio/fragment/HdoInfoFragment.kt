@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.text.format.DateFormat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -92,11 +93,15 @@ class HdoInfoFragment : BaseFragment() {
     }
 
     private fun invalidateChart() {
+        val days = Calendar.getInstance().getActualMaximum(Calendar.DAY_OF_MONTH)
         binding.chart.apply {
             isClickable = false
             description.isEnabled = false
             legend.isEnabled = false
-            xAxis.isEnabled = false
+            xAxis.apply {
+                isEnabled = false
+                axisMaximum = days.toFloat()
+            }
             axisRight.isEnabled = false
             axisLeft.apply {
                 axisMinimum = 0f
@@ -104,7 +109,8 @@ class HdoInfoFragment : BaseFragment() {
             }
         }
         val entries = ArrayList<Entry>()
-        for ((index, value) in packetLogs.withIndex()) {
+        val thisMonthPacketLogs = getThisMonthPacketLogs(packetLogs)
+        for ((index, value) in thisMonthPacketLogs.withIndex()) {
             entries.add(Entry(index.toFloat(), value.withCoupon.toFloat()))
         }
         val dataSet = LineDataSet(entries, "withCoupon")
@@ -117,6 +123,11 @@ class HdoInfoFragment : BaseFragment() {
         val lineData = LineData(dataSet)
         binding.chart.data = lineData
         binding.chart.invalidate()
+    }
+
+    private fun getThisMonthPacketLogs(packetLogs: List<PacketLog>): List<PacketLog> {
+        val date = DateFormat.format("yyyyMM", Calendar.getInstance())
+        return packetLogs.filter { "^$date".toRegex().containsMatchIn(it.date) }
     }
 
     private fun createBody(hdo: String, bool: Boolean): ToggleCouponInfo {
