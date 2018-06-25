@@ -110,8 +110,11 @@ class HdoInfoFragment : BaseFragment() {
         }
         val entries = ArrayList<Entry>()
         val thisMonthPacketLogs = getThisMonthPacketLogs(packetLogs)
+        entries.add(Entry(0F, 0F))
+        var sum = 0F
         for ((index, value) in thisMonthPacketLogs.withIndex()) {
-            entries.add(Entry(index.toFloat(), value.withCoupon.toFloat()))
+            sum += value.withCoupon
+            entries.add(Entry((index + 1).toFloat(), sum))
         }
         val dataSet = LineDataSet(entries, "withCoupon")
         dataSet.color = ContextCompat.getColor(activity!!, R.color.colorAccent)
