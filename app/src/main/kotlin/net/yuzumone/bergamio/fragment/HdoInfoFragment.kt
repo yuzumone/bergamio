@@ -116,15 +116,16 @@ class HdoInfoFragment : BaseFragment() {
             sum += value.withCoupon
             entries.add(Entry((index + 1).toFloat(), sum))
         }
-        val dataSet = LineDataSet(entries, "withCoupon")
-        dataSet.color = ContextCompat.getColor(activity!!, R.color.colorAccent)
-        dataSet.lineWidth = 3f
-        dataSet.setDrawValues(false)
-        dataSet.setDrawCircles(false)
-        dataSet.setDrawFilled(true)
-        dataSet.fillDrawable = ContextCompat.getDrawable(activity!!, R.drawable.fade_amber)
-        val lineData = LineData(dataSet)
-        binding.chart.data = lineData
+        val dataSet = LineDataSet(entries, "withCoupon").apply {
+            color = ContextCompat.getColor(activity!!, R.color.colorAccent)
+            lineWidth = 3f
+            setDrawValues(false)
+            setDrawCircles(false)
+            setDrawFilled(true)
+            mode = LineDataSet.Mode.CUBIC_BEZIER
+            fillDrawable = ContextCompat.getDrawable(activity!!, R.drawable.fade_amber)
+        }
+        binding.chart.data =  LineData(dataSet)
         binding.chart.invalidate()
     }
 
