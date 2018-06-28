@@ -135,6 +135,12 @@ class CouponInfoListFragment : BaseFragment() {
                         .addToBackStack(null).commit()
                 return true
             }
+            R.id.menu_license -> {
+                val fragment = LicenseFragment()
+                fragmentManager!!.beginTransaction().replace(R.id.content, fragment)
+                        .addToBackStack(null).commit()
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
