@@ -38,6 +38,7 @@
 -keep class com.squareup.okhttp3.** { *; }
 -keep interface com.squareup.okhttp3.* { *; }
 -dontwarn javax.annotation.**
+-dontwarn org.conscrypt.**
 
 # Retrofit
 -dontnote retrofit2.Platform
@@ -56,3 +57,6 @@
    long producerNode;
    long consumerNode;
 }
+
+# MPAndroidChart
+-keep class com.github.mikephil.charting.** { *; }
