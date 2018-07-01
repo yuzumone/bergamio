@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
@@ -119,9 +120,16 @@ class HdoInfoFragment : BaseFragment() {
         val dataSet = LineDataSet(entries, "withCoupon").apply {
             color = ContextCompat.getColor(activity!!, R.color.colorAccent)
             lineWidth = 3f
-            setDrawValues(false)
             setDrawCircles(false)
             setDrawFilled(true)
+            valueTextColor = Color.WHITE
+            setValueFormatter { value, _, _, _ ->
+                if (value == sum) {
+                    getString(R.string.mb, value.toInt())
+                } else {
+                    ""
+                }
+            }
             mode = LineDataSet.Mode.CUBIC_BEZIER
             fillDrawable = ContextCompat.getDrawable(activity!!, R.drawable.fade_amber)
         }
